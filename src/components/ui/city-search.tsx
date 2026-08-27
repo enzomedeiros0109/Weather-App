@@ -1,19 +1,41 @@
 import { useState } from "react";
 import { Button } from "../button"
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/command.tsx"
-import { Search } from "lucide-react";
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/command.tsx"
+import { Clock, Ghost, Loader2, LocateIcon, Search, XCircle } from "lucide-react";
 import { useLocationSearch } from "@/hooks/use-weather";
+import { useNavigate } from "react-router-dom";
+import { useSearchHistory } from "@/hooks/use-search-history";
+import { format } from "date-fns";
 
 const CitySearch = () => {
 
    const [open, setOpen] = useState(false)
    const [query, setQuery] = useState("")
+   const navigate = useNavigate()
 
    const { data: locations, isLoading } = useLocationSearch(query)
+   const { history, clearHistory, addToHistory } = useSearchHistory()
+
+
+
+   const handleSelect = (cityData: string) => {
+      const [lat, lon, name, country] = cityData.split("|")
+
+      // Add to search history
+      addToHistory.mutate({
+         query,
+         name,
+         lat: parseFloat(lat),
+         lon: parseFloat(lon),
+         country,
+      })
+
+      setOpen(false)
+      navigate(`/city/${name}??lat=${lat}&lon=${lon}`)
+   }
 
    return (
       <>
-
          <Button
             variant={"outline"}
             className="relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64"
@@ -24,20 +46,102 @@ const CitySearch = () => {
 
          <CommandDialog open={open} onOpenChange={setOpen}>
             <CommandInput
-               placeholder="Type a command or search..."
+               placeholder="Search cities..."
                value={query}
                onValueChange={setQuery}
             />
-
             <CommandList>
                {query.length > 2 && !isLoading && (
                   <CommandEmpty>No cities found.</CommandEmpty>
                )}
-               <CommandGroup heading="Suggestions">
+               <CommandGroup heading="Favorites">
                   <CommandItem>Calendar</CommandItem>
-                  <CommandItem>Search Emoji</CommandItem>
-                  <CommandItem>Calculator</CommandItem>
+
                </CommandGroup>
+
+
+               {history.length > 0 && (
+                  <>
+                     <CommandSeparator />
+                     <CommandGroup>
+                        <div className="flex items-center justify-between px-2 my-2">
+                           <p className="text-xs text-muted-foreground">Recent Searches</p>
+                           <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => clearHistory.mutate()}
+                           >
+                              <XCircle className="h-4 w-4" />
+                              Clear history
+                           </Button>
+                        </div>
+
+                        {history.map((item) => {
+                           return (
+                              <CommandItem
+                                 key={`${item.lat}-${item.lon}`}
+                                 value={`${item.lat}|${item.lon}|${item.name}|${item.country}`}
+                                 onSelect={handleSelect}
+                              >
+                                 <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                                 <span>
+                                    {item.name}
+                                 </span>
+
+                                 {item.state && (
+                                    <span className="text-sm text-muted-foreground">
+                                       , {item.state}
+                                    </span>
+                                 )}
+                                 <span className="text-sm text-muted-foreground">
+                                    , {item.country}
+                                 </span>
+                                 <span className="ml-auto text-xs text-muted-foreground">
+                                    {format(item.searchedAt, "dd/MM/yyyy")}
+                                 </span>
+                              </CommandItem>
+                           )
+
+                        })}
+                     </CommandGroup>
+                  </>
+               )}
+
+               <CommandSeparator />
+
+               {locations && locations.length > 0 && (
+                  <CommandGroup heading="Suggestions">
+                     {isLoading && (
+                        <div className="flex items-center justify-center p4">
+                           <Loader2 className="h-4 w-4 animate-spin" />
+                        </div>
+                     )}
+                     {locations.map((location) => {
+                        return (
+                           <CommandItem
+                              key={`${location.lat}-${location.lon}`}
+                              value={`${location.lat}|${location.lon}|${location.name}|${location.country}`}
+                              onSelect={handleSelect}
+                           >
+                              <Search className="mr-1 h-4 w-4" />
+                              <span>
+                                 {location.name}
+                              </span>
+
+                              {location.state && (
+                                 <span className="text-sm text-muted-foreground">
+                                    , {location.state}
+                                 </span>
+                              )}
+                              <span className="text-sm text-muted-foreground">
+                                 , {location.country}
+                              </span>
+                           </CommandItem>
+                        )
+                     })}
+                     <CommandItem>Calendar</CommandItem>
+                  </CommandGroup>
+               )}
             </CommandList>
          </CommandDialog>
       </>
