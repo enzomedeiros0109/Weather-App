@@ -15,18 +15,14 @@ const FavoriteButton = ({ data }: FavoriteButtonProps) => {
 
    const handleToggleFavorite = () => {
       if (isCurrentlyFavorite) {
-         removeFavorite.mutate(`${data.coord.lat}-${data.coord.lon}`)
-         toast.error(`Removed ${data.name} from favorites`)
-      }
-      else {
-         addToFavorite.mutate({
-            name: data.name,
-            lat: data.coord.lat,
-            lon: data.coord.lon,
-            country: data.sys.country,
+         removeFavorite.mutate(`${data.coord.lat}-${data.coord.lon}`, {
+            onSuccess: () => toast.error(`Removed ${data.name} from favorites`),
          })
-         toast.success(`Added ${data.name} to favorites`)
-
+      } else {
+         addToFavorite.mutate(
+            { name: data.name, lat: data.coord.lat, lon: data.coord.lon, country: data.sys.country },
+            { onSuccess: () => toast.success(`Added ${data.name} to favorites`) }
+         )
       }
    }
 
