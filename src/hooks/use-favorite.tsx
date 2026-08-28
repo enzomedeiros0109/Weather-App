@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocalStorage } from "./use-local-storage";
-import CityPage from "@/pages/city-page";
 
 interface FavoriteCity {
    id: string
@@ -30,7 +29,7 @@ export function useFavorite() {
       ) => {
          const newFavorite: FavoriteCity = {
             ...city,
-            id: `${city.lat}-${city.lon}}`,
+            id: `${city.lat}-${city.lon}`,
             addedAt: Date.now(),
          }
 
