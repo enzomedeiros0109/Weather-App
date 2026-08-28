@@ -1,6 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/alert'
 import { Button } from '@/components/button'
 import CurrentWeather from '@/components/ui/current-weather'
+import FavoriteCities from '@/components/ui/favorite-citites'
 import HourlyTemperature from '@/components/ui/hourly-temperature'
 import WeatherSkeleton from '@/components/ui/loading-skeleton'
 import WeatherDetails from '@/components/ui/weather-details'
@@ -14,7 +15,7 @@ const WeatherDashboard = () => {
     coordinates,
     error: locationError,
     getLocation,
-    isLoading: locationLoading
+    // isLoading: locationLoading
   } = useGeolocation()
 
   const locationQuery = useReverseGeocodeQuery(coordinates);
@@ -91,7 +92,7 @@ const WeatherDashboard = () => {
     <div className='space-y-4'>
 
       {/* Favorite Cities */}
-
+      <FavoriteCities />
       <div className='flex items-center justify-between'>
         <h1 className='text-xl font-bold tracking-tight'>My Location</h1>
         <Button variant={'outline'}
