@@ -39,10 +39,10 @@ const CitySearch = () => {
       <>
          <Button
             variant={"outline"}
-            className="relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64"
+            className="relative min-w-0 flex-1 shrink justify-start overflow-hidden text-sm text-muted-foreground sm:pr-12 md:w-40 md:flex-none lg:w-64"
             onClick={() => setOpen(true)}>
-            <Search className="mr-2 h-4 w-4" />
-            Search Cities
+            <Search className="mr-0 h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Search Cities</span>
          </Button>
 
          <CommandDialog open={open} onOpenChange={setOpen}>
