@@ -7,7 +7,7 @@ const Layout = ( {children}: PropsWithChildren) => {
     <div className='bg-linear-to-br from-background to-muted'>
 
       <Header />
-      <main className='min-h-screen container mx-auto px-4 py-8'>
+      <main className='container mx-auto min-h-screen min-w-0 px-4 py-8'>
       {children}
 
       </main>

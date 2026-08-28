@@ -89,7 +89,7 @@ const WeatherDashboard = () => {
   }
 
   return (
-    <div className='space-y-4'>
+    <div className='min-w-0 space-y-4'>
 
       {/* Favorite Cities */}
       <FavoriteCities />
@@ -105,8 +105,8 @@ const WeatherDashboard = () => {
         </Button>
       </div>
 
-      <div className='grid gap-6'>
-        <div className='flex flex-col lg:flex-row gap-4'>
+      <div className='grid min-w-0 gap-6'>
+        <div className='flex min-w-0 flex-col gap-4 lg:flex-row'>
           <CurrentWeather
             data={weatherQuery.data}
             locationName={locationName}
