@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../button"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/command.tsx"
-import { Clock, Ghost, Loader2, LocateIcon, Search, XCircle } from "lucide-react";
+import { Clock, Loader2, Search, XCircle } from "lucide-react";
 import { useLocationSearch } from "@/hooks/use-weather";
 import { useNavigate } from "react-router-dom";
 import { useSearchHistory } from "@/hooks/use-search-history";
@@ -31,7 +31,7 @@ const CitySearch = () => {
       })
 
       setOpen(false)
-      navigate(`/city/${name}??lat=${lat}&lon=${lon}`)
+      navigate(`/city/${name}?lat=${lat}&lon=${lon}`)
    }
 
    return (

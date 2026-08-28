@@ -5,9 +5,10 @@ import { ArrowDown, ArrowUp, Droplets, Wind } from 'lucide-react'
 interface CurrentWeatherProps {
    data: WeatherData,
    locationName?: GeocodingResponse,
+   wasSearched?: boolean
 }
 
-const CurrentWeather = ({ data, locationName }: CurrentWeatherProps) => {
+const CurrentWeather = ({ data, locationName, wasSearched }: CurrentWeatherProps) => {
 
    const {
       weather: [currentWeather],
@@ -60,7 +61,8 @@ const CurrentWeather = ({ data, locationName }: CurrentWeatherProps) => {
                      </div>
                   </div>
 
-                  <div className='grid grid-cols-2 gap-4'>
+                  {/* When the city is searched, it adds mt-20 */}
+                  <div className={`grid grid-cols-2 gap-4 ${wasSearched ? 'mt-15' : ''}`}>
                      <div className='flex items-center gap-2'>
                         <Droplets className='h-4 w-4 text-blue-500' />
                         <div className='space-y-0.5'>
@@ -79,7 +81,7 @@ const CurrentWeather = ({ data, locationName }: CurrentWeatherProps) => {
                   </div>
                </div>
 
-               <div className='felx flex-col items-center justify-center'>
+               <div className='felx flex-col mx-auto items-center justify-center'>
                   <div className='relative flex aspect-square w-full max-w-50 items-center justify-center'>
                      <img
                         src={`https://openweathermap.org/img/wn/${currentWeather.icon}@4x.png`}
