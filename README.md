@@ -87,3 +87,4 @@ src/
 - A permissão de localização deve ser concedida no navegador para carregar o dashboard inicial.
 - A chave da OpenWeather é exposta no bundle do frontend por ser uma variável `VITE_`. Para produção, avalie usar um backend ou proxy para proteger credenciais e controlar o acesso à API.
 - O histórico de buscas é armazenado localmente com a chave `search-history`.
+- Você pode acessar o conteúdo de suporte utilizado para esse projeto [aqui](https://youtu.be/BCp_5PoKrvI?si=RGBnS6NQvX3roovi)
